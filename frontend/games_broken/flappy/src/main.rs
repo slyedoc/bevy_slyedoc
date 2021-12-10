@@ -1,0 +1,4 @@
+fn main() {
+    flappy::run();
+}
+
