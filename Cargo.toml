@@ -8,8 +8,8 @@ resolver = "2"
 members = ["engine", "packages/*"]
 
 [patch.crates-io]
-bevy = { path = "../bevy" }
-#bevy = { git = "https://github.com/slyedoc/bevy", branch = "main" }
+#bevy = { path = "../bevy" }
+bevy = { git = "https://github.com/slyedoc/bevy", branch = "main" }
 crevice = { path = "../bevy/crates/crevice" }
 #crevice = { git = "https://github.com/slyedoc/bevy", branch = "main" }
 #bevy_egui = { path = "../bevy_egui" }
