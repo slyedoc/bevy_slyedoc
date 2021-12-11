@@ -5,16 +5,18 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
-[profile.dev]
-opt-level = 1
+# [profile.dev]
+# opt-level = 1
 
-[features]
-dev = ["bevy/dynamic"]
+# [features]
+# dev = ["bevy/dynamic"]
 
 [dependencies]
 bevy = "0.5.0"
+engine = { path = "../../engine" }
+wasm-bindgen = "0.2.78"
 wgpu-types = "0.11"
 wgpu = "0.11"
 rand = "0.8"
@@ -23,7 +25,6 @@ image = "0.23"
 
 [target.'cfg(target_os = "android")'.dependencies]
 ndk-glue = "0.5"
-
 
 [package.metadata.android]
 assets = "assets"

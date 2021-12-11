@@ -1,4 +1,4 @@
-const AGENT_COUNT: u32 = 500_000;
+const AGENT_COUNT: u32 = 100_000;
 const TEX_WIDTH: u32 = 1080;
 const TEX_HEIGHT: u32 = 1080;
 const SPECIES_COUNT: u32 = 8;
@@ -8,64 +8,62 @@ const GLOBAL_SETTINGS: &GlobalSettings = &GlobalSettings {
 };
 const FIXED_DELTA_TIME: f32 = 1. / 50.;
 const RUNS_PER_FRAME: usize = 5;
-const SAVE_TO_DISK: Option<&str> = None;
 // species' settings generated at start of from_world for MoldShaders
 
 use core::panic;
 use std::{
     borrow::Cow,
     num::{NonZeroU32, NonZeroU64},
-    path::Path,
     sync::Mutex,
 };
 
 use bevy::{
-    core::Time,
+    core::{Name, Time},
     core_pipeline,
     ecs::prelude::*,
-    input::prelude::*,
     math::*,
     prelude::App,
     render2::{
+        camera::PerspectiveCameraBundle,
         color::Color,
+        options::WgpuOptions,
         render_graph::{Node, NodeRunError, RenderGraph, RenderGraphContext},
         render_resource::{
             BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayoutDescriptor,
             BindGroupLayoutEntry, BindingResource, BindingType, BlendComponent, BlendFactor,
             BlendOperation, BlendState, Buffer, BufferBindingType, BufferInitDescriptor,
             BufferSize, BufferUsages, ColorTargetState, ColorWrites, ComputePassDescriptor,
-            ComputePipeline, ComputePipelineDescriptor, Extent3d, Face, FrontFace, ImageCopyBuffer,
-            ImageCopyTexture, ImageDataLayout, ImageSubresourceRange, LoadOp, MultisampleState,
-            Operations, Origin3d, PipelineLayoutDescriptor, PolygonMode, PrimitiveState,
-            PrimitiveTopology, RawFragmentState, RawRenderPipelineDescriptor, RawVertexState,
-            RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, ShaderStages,
-            StorageTextureAccess, Texture, TextureAspect, TextureDescriptor, TextureDimension,
-            TextureFormat, TextureUsages, TextureViewDescriptor, TextureViewDimension,
+            ComputePipeline, ComputePipelineDescriptor, Extent3d, Face, FrontFace,
+            ImageSubresourceRange, LoadOp, MultisampleState, Operations, PipelineLayoutDescriptor,
+            PolygonMode, PrimitiveState, PrimitiveTopology, RawFragmentState,
+            RawRenderPipelineDescriptor, RawVertexState, RenderPassColorAttachment,
+            RenderPassDescriptor, RenderPipeline, ShaderStages, StorageTextureAccess, Texture,
+            TextureAspect, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages,
+            TextureViewDescriptor, TextureViewDimension,
         },
         renderer::{RenderContext, RenderDevice, RenderQueue},
         texture::BevyDefault,
         view::ExtractedWindows,
         RenderApp, RenderStage,
     },
-    window::{WindowDescriptor, WindowId, WindowMode, Windows},
-    PipelinedDefaultPlugins,
+    window::{WindowDescriptor, WindowId},
 };
+use engine::prelude::*;
 use rand::Rng;
-use wgpu::{BufferBinding, MapMode, ShaderModuleDescriptor, ShaderSource};
-use wgpu_types::BufferDescriptor;
-
-#[derive(Default)]
-struct Fullscreen(bool);
+use wgpu::*;
 
 pub fn main() {
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
-        width: 1080.,
-        height: 1080.,
+        title: "Mold".to_string(),
+        // mode: bevy::window::WindowMode::Fullscreen,
         ..Default::default()
     })
-    .add_plugins(PipelinedDefaultPlugins)
-    .init_resource::<Fullscreen>();
+    .insert_resource(WgpuOptions {
+        features: Features::TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES | Features::CLEAR_COMMANDS,
+        ..Default::default()
+    })
+    .add_plugin(StandardEnvironmentPlugin);
 
     let render_app = app.sub_app(RenderApp);
     render_app.add_system_to_stage(RenderStage::Extract, time_extract_system);
@@ -84,34 +82,14 @@ pub fn main() {
         .add_node_edge(core_pipeline::node::MAIN_PASS_DRIVER, "mold")
         .unwrap();
 
-    app.add_startup_system(setup_system)
-        .add_system(fullscreen_system);
-
-    if let Some(save_dir) = SAVE_TO_DISK {
-        std::fs::create_dir_all(save_dir).unwrap();
-    }
-
-    app.run();
-}
-
-fn fullscreen_system(
-    mut fs: ResMut<Fullscreen>,
-    inp: Res<Input<KeyCode>>,
-    mut windows: ResMut<Windows>,
-) {
-    if inp.just_pressed(KeyCode::F11) {
-        let primary = windows.get_primary_mut().unwrap();
-        fs.0 = !fs.0;
-        primary.set_mode(if fs.0 {
-            WindowMode::Fullscreen
-        } else {
-            WindowMode::Windowed
-        });
-    }
+    app.add_startup_system(setup_system).run();
 }
 
 fn setup_system(mut commands: Commands) {
-    commands.spawn_bundle(bevy::render2::camera::PerspectiveCameraBundle::default());
+    commands
+        .spawn_bundle(PerspectiveCameraBundle::default())
+        .insert(CameraController::default())
+        .insert(Name::new("camera"));
     // commands.spawn_bundle(bevy::render2::camera::OrthographicCameraBundle::new_2d());
 }
 #[repr(C)]
@@ -191,13 +169,10 @@ pub struct MoldShaders {
     display_pipeline: RenderPipeline,
     display_bg: BindGroup,
 
-    combine_texture: Texture,
     update_texture: Texture,
 
     time_buffer: Buffer,
     time_bg: BindGroup,
-
-    read_buffer: Buffer,
 }
 
 #[allow(unused)]
@@ -786,13 +761,6 @@ impl FromWorld for MoldShaders {
             },
         });
 
-        let read_buffer = render_device.create_buffer(&BufferDescriptor {
-            label: Some("fetch_buffer"),
-            size: 4 * (TEX_WIDTH * TEX_HEIGHT) as u64,
-            usage: BufferUsages::COPY_DST | BufferUsages::MAP_READ,
-            mapped_at_creation: false,
-        });
-
         MoldShaders {
             update_pipeline,
             update_bg_a,
@@ -809,10 +777,8 @@ impl FromWorld for MoldShaders {
             display_pipeline,
             display_bg,
 
-            combine_texture,
             update_texture,
 
-            read_buffer,
             time_buffer,
             time_bg,
         }
@@ -918,54 +884,7 @@ impl Node for MoldNode {
         pass.dispatch(div_ceil(TEX_WIDTH, 32), div_ceil(TEX_HEIGHT, 32), 1);
 
         drop(pass);
-        if let Some(save_path) = SAVE_TO_DISK {
-            render_context.command_encoder.copy_texture_to_buffer(
-                ImageCopyTexture {
-                    texture: &shaders.combine_texture,
-                    mip_level: 0,
-                    origin: Origin3d::ZERO,
-                    aspect: TextureAspect::All,
-                },
-                ImageCopyBuffer {
-                    buffer: &shaders.read_buffer,
-                    layout: ImageDataLayout {
-                        offset: 0,
-                        bytes_per_row: NonZeroU32::new(4 * TEX_WIDTH),
-                        rows_per_image: NonZeroU32::new(TEX_HEIGHT),
-                    },
-                },
-                Extent3d {
-                    width: TEX_WIDTH,
-                    height: TEX_HEIGHT,
-                    depth_or_array_layers: 1,
-                },
-            );
 
-            let slice = shaders.read_buffer.slice(..);
-            render_context
-                .render_device
-                .map_buffer(&slice, MapMode::Read);
-            let view = slice.get_mapped_range();
-
-            let save_dir = Path::new(save_path);
-            let filepath = save_dir.join(format!(
-                "frame_{}.png",
-                (this.time / (FIXED_DELTA_TIME * RUNS_PER_FRAME as f32)) as u32 - 1
-            ));
-
-            image::save_buffer_with_format(
-                filepath,
-                &view,
-                TEX_WIDTH,
-                TEX_HEIGHT,
-                image::ColorType::Rgba8,
-                image::ImageFormat::Png,
-            )
-            .unwrap();
-
-            drop(view);
-            shaders.read_buffer.unmap();
-        }
         let ew = &world.get_resource::<ExtractedWindows>().unwrap().windows[&WindowId::primary()];
 
         if let Some(swapchain) = &ew.swap_chain_texture {

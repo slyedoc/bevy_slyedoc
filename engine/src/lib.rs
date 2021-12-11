@@ -12,6 +12,7 @@ use bevy::{
     prelude::{App, EventWriter, KeyCode, Plugin, Res, ResMut},
     render2::view::Msaa,
     PipelinedDefaultPlugins,
+    window::{WindowMode, Windows},
 };
 use bevy_inspector_egui::{WorldInspectorParams, WorldInspectorPlugin};
 use camera_controller::CameraControllerPlugin;
@@ -28,6 +29,9 @@ pub mod prelude {
         StandardEnvironmentPlugin,
     };
 }
+
+#[derive(Default)]
+struct Fullscreen(bool);
 
 pub struct StandardEnvironmentPlugin;
 
@@ -51,16 +55,13 @@ impl Plugin for StandardEnvironmentPlugin {
         //#[cfg(not(target_arch = "wasm32"))]
         // app.add_plugin(config::ConfigPlugin);
     }
-
-    fn name(&self) -> &str {
-        std::any::type_name::<Self>()
-    }
 }
 
 fn control_system(
     #[cfg(not(target_arch = "wasm32"))] mut exit: EventWriter<AppExit>,
     key_input: Res<Input<KeyCode>>,
     mut world_inspection: ResMut<WorldInspectorParams>,
+    mut windows: ResMut<Windows>,
 ) {
     if key_input.just_pressed(KeyCode::F12) {
         world_inspection.enabled = !world_inspection.enabled;
@@ -68,5 +69,15 @@ fn control_system(
     #[cfg(not(target_arch = "wasm32"))]
     if key_input.pressed(KeyCode::Escape) {
         exit.send(AppExit);
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    if key_input.just_pressed(KeyCode::F11) {
+        let primary = windows.get_primary_mut().unwrap();
+        if primary.mode() == WindowMode::Windowed {
+            primary.set_mode(WindowMode::Fullscreen);
+        } else {
+            primary.set_mode(WindowMode::Windowed);
+        }        
     }
 }

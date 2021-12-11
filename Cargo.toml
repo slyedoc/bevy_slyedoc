@@ -13,7 +13,7 @@ bevy = { path = "../bevy" }
 crevice = { path = "../bevy/crates/crevice" }
 #crevice = { git = "https://github.com/slyedoc/bevy", branch = "main" }
 #bevy_egui = { path = "../bevy_egui" }
-bevy_egui = { git = "https://github.com/slyedoc/bevy_egui", branch = "pipelined" }
+bevy_egui = { git = "https://github.com/slyedoc/bevy_egui", branch = "bevy-pipelined-optimized" }
 #bevy-inspector-egui = { path = "../bevy-inspector-egui" }
 bevy-inspector-egui = { git = "https://github.com/slyedoc/bevy-inspector-egui", branch = "pipelined-editor" }
 bevy_mod_raycast = { path = "../bevy_mod_raycast" }

@@ -1,5 +1,5 @@
 [package]
-name = "engine"
+name = "engine" # TODO: Fine better name
 version = "0.1.0"
 edition = "2021"
 
