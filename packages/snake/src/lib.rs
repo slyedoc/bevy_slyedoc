@@ -23,7 +23,7 @@ use rand::prelude::*;
 
 pub fn run() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
+        .add_plugin(EnginePlugin)
         .insert_resource(WindowDescriptor {
             title: "Snake".to_string(),
             width: 500.0,

@@ -15,7 +15,7 @@ use engine::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
+        .add_plugin(EnginePlugin)
         .add_startup_system(setup)
         .add_system(movement)
         .add_system(animate_light_direction)

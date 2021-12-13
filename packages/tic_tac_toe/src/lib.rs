@@ -3,27 +3,23 @@ mod board;
 use bevy::{
     core::prelude::*,
     core_pipeline::ClearColor,
-    ecs::prelude::*,
+    ecs:: prelude::*,
     math::*,
     pbr2::*,
-    prelude::{
-        App, Assets, Commands, CoreStage, Handle, Transform,
-    },
-    render2::{
-        camera::*,
-        color::Color,
-    },
+    prelude::{ App, Assets, Commands, CoreStage, Handle, Transform},
+    render2::{camera::*, color::Color},
     window::{CursorMoved, WindowDescriptor},
 };
 use bevy_inspector_egui::Inspectable;
 use bevy_mod_raycast::*;
+use board::*;
 use engine::prelude::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn run() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
+        .add_plugin(EnginePlugin)
         .insert_resource(WindowDescriptor {
             title: "Tic-Tac-Toe".to_string(),
             #[cfg(target_arch = "wasm32")]
@@ -46,9 +42,10 @@ pub fn run() {
             update_raycast_with_cursor.before(RaycastSystem::BuildRays),
         )
         .add_startup_system(setup_camera)
-        .add_startup_system(board::setup)
+        .add_startup_system(setup_board)
         .run();
 }
+
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -70,7 +67,6 @@ pub struct GameConfig {
     line_material: Handle<StandardMaterial>,
     cell_material: Handle<StandardMaterial>,
 }
-
 
 impl FromWorld for GameConfig {
     fn from_world(world: &mut World) -> Self {
@@ -109,7 +105,6 @@ fn setup_camera(mut commands: Commands) {
         .insert(RayCastSource::<LocationRaycastSet>::new())
         .insert(Name::new("Camera"));
 }
-
 
 // This is a unit struct we will use to mark our generic `RayCastMesh`s and `RayCastSource` as part
 // of the same group, or "RayCastSet". For more complex use cases, you might use this to associate

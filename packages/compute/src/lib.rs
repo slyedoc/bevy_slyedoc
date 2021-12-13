@@ -1,9 +1,9 @@
 const AGENT_COUNT: u32 = 100_000;
 const TEX_WIDTH: u32 = 1080;
 const TEX_HEIGHT: u32 = 1080;
-const SPECIES_COUNT: u32 = 8;
+const SPECIES_COUNT: u32 = 12;
 const GLOBAL_SETTINGS: &GlobalSettings = &GlobalSettings {
-    decay_rate: 0.5,
+    decay_rate: 0.6,
     diffuse_rate: 4.0,
 };
 const FIXED_DELTA_TIME: f32 = 1. / 50.;
@@ -57,13 +57,14 @@ pub fn main() {
     app.insert_resource(WindowDescriptor {
         title: "Mold".to_string(),
         // mode: bevy::window::WindowMode::Fullscreen,
+        vsync: false,
         ..Default::default()
     })
     .insert_resource(WgpuOptions {
         features: Features::TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES | Features::CLEAR_COMMANDS,
         ..Default::default()
     })
-    .add_plugin(StandardEnvironmentPlugin);
+    .add_plugin(EnginePlugin);
 
     let render_app = app.sub_app(RenderApp);
     render_app.add_system_to_stage(RenderStage::Extract, time_extract_system);
@@ -90,8 +91,8 @@ fn setup_system(mut commands: Commands) {
         .spawn_bundle(PerspectiveCameraBundle::default())
         .insert(CameraController::default())
         .insert(Name::new("camera"));
-    // commands.spawn_bundle(bevy::render2::camera::OrthographicCameraBundle::new_2d());
 }
+
 #[repr(C)]
 #[derive(bytemuck::Zeroable, bytemuck::Pod, Clone, Copy)]
 struct PlainTime {

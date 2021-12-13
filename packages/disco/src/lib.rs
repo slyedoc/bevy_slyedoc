@@ -19,13 +19,13 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn run() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
-        .insert_resource(WindowDescriptor {
-            title: "Disco".to_string(),
-            #[cfg(target_arch = "wasm32")]
-            canvas: Some("canvas.wasm".to_string()),
-            ..Default::default()
-        })
+    .insert_resource(WindowDescriptor {
+        title: "Disco".to_string(),
+        #[cfg(target_arch = "wasm32")]
+        canvas: Some("canvas.wasm".to_string()),
+        ..Default::default()
+    })
+        .add_plugin(EnginePlugin)
         .insert_inspector_resource::<ClearColor>(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
         .add_startup_system(setup)
         .add_system(movement)

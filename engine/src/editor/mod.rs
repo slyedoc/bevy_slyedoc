@@ -1,7 +1,7 @@
 mod resource_inspector;
 mod ui;
 use bevy::{ecs::schedule::ShouldRun, prelude::*};
-use bevy_inspector_egui::{plugin::InspectorWindows, *};
+use bevy_inspector_egui::*;
 pub use resource_inspector::*;
 use std::fmt::Debug;
 
@@ -32,7 +32,6 @@ pub struct EditorPlugin;
 impl Plugin for EditorPlugin {
     fn build(&self, app: &mut App) {
         info!("Toggle Editor - F12");
-        info!("Toggle World Inspector - F11");
 
         app.add_plugin(InspectorPlugin::<Editor>::new().open(false))
             .add_plugin(InspectorPlugin::<Inspector>::new().open(false))
@@ -42,9 +41,10 @@ impl Plugin for EditorPlugin {
                 SystemSet::on_update(EditorState::Playing).with_system(ui::toolbar_system),
             )
             .add_system_set(
-                SystemSet::on_exit(EditorState::Playing).with_system(ui::close_windows_system),
+                SystemSet::on_exit(EditorState::Playing)
+                .with_system(close)
+                .with_system(ui::close_windows_system),
             )
-            .add_startup_system(setup)
             .add_system(action_system);
         // .add_system_to_stage(
         //     CoreStage::PostUpdate,
@@ -55,8 +55,12 @@ impl Plugin for EditorPlugin {
     }
 }
 
-pub fn setup(mut world_inspection: ResMut<WorldInspectorParams>) {
+fn setup(mut world_inspection: ResMut<WorldInspectorParams>) {
     world_inspection.enabled = true
+}
+
+fn close(mut world_inspection: ResMut<WorldInspectorParams>) {
+    world_inspection.enabled = false;
 }
 
 // fn maintain_inspected_entities(
@@ -85,27 +89,12 @@ pub fn setup(mut world_inspection: ResMut<WorldInspectorParams>) {
 fn action_system(
     keyboard_input: Res<Input<KeyCode>>,
     mut state: ResMut<State<EditorState>>,
-    mut world_inspection: ResMut<WorldInspectorParams>,
-    mut windows: ResMut<Editor>,
-    mut inspector_windows: ResMut<InspectorWindows>,
 ) {
     if keyboard_input.just_pressed(KeyCode::F12) {
         match state.current() {
             EditorState::Playing => state.pop().unwrap(),
             EditorState::Disabled => state.push(EditorState::Playing).unwrap(),
         };
-    }
-
-    if keyboard_input.just_pressed(KeyCode::F11) {
-        let inspector = inspector_windows.window_data_mut::<Inspector>();
-        inspector.visible = !inspector.visible;
-    }
-    if keyboard_input.just_pressed(KeyCode::F10) {
-        world_inspection.enabled = !world_inspection.enabled;
-    }
-
-    if keyboard_input.just_pressed(KeyCode::F9) {
-        windows.spawner = !windows.spawner;
     }
 }
 

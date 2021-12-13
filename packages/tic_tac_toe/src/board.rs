@@ -12,7 +12,7 @@ use bevy_mod_raycast::RayCastMesh;
 #[derive(Component)]
 pub struct Board;
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Location {
     #[allow(dead_code)]
     id: u32,
@@ -20,6 +20,7 @@ pub struct Location {
     state: LocationState,
 }
 
+#[derive(Debug)]
 pub enum LocationState {
     Empty,
     #[allow(dead_code)]
@@ -29,7 +30,7 @@ pub enum LocationState {
 }
 
 
-pub fn setup(
+pub fn setup_board(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     game_config: ResMut<GameConfig>,

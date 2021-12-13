@@ -1,0 +1,4 @@
+
+fn main() {
+    boids::run();
+}

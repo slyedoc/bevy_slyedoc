@@ -26,23 +26,22 @@ use shapes::ShapePlugin;
 pub mod prelude {
     pub use crate::{
         camera_controller::*, editor::*, loaders::*, materials::*, shapes::*,
-        StandardEnvironmentPlugin,
+        EnginePlugin,
     };
 }
 
-#[derive(Default)]
-struct Fullscreen(bool);
+pub struct EnginePlugin;
 
-pub struct StandardEnvironmentPlugin;
-
-impl Plugin for StandardEnvironmentPlugin {
+impl Plugin for EnginePlugin {
     fn build(&self, app: &mut App) {
-        // limiting for wasm firefox
-        #[cfg(target_arch = "wasm32")]
-        app.insert_resource(bevy::pbr2::DirectionalLightShadowMap { size: 2048 });
 
         app.add_plugins(PipelinedDefaultPlugins)
             .insert_resource(Msaa { samples: 4 })
+            .insert_resource(WorldInspectorParams {
+                // TODO: Figure out why egui crashes when false
+                enabled: true,
+                ..Default::default()
+            })
             .add_plugin(WorldInspectorPlugin::default())
             .add_plugin(EditorPlugin)
             .add_plugin(CameraControllerPlugin)
@@ -59,25 +58,25 @@ impl Plugin for StandardEnvironmentPlugin {
 
 fn control_system(
     #[cfg(not(target_arch = "wasm32"))] mut exit: EventWriter<AppExit>,
-    key_input: Res<Input<KeyCode>>,
-    mut world_inspection: ResMut<WorldInspectorParams>,
+    key_input: Res<Input<KeyCode>>,    
     mut windows: ResMut<Windows>,
 ) {
-    if key_input.just_pressed(KeyCode::F12) {
-        world_inspection.enabled = !world_inspection.enabled;
-    }
     #[cfg(not(target_arch = "wasm32"))]
-    if key_input.pressed(KeyCode::Escape) {
-        exit.send(AppExit);
+    {
+        if key_input.pressed(KeyCode::Escape) {
+            exit.send(AppExit);
+        }
+
+        if key_input.just_pressed(KeyCode::F11) {
+            let primary = windows.get_primary_mut().unwrap();
+            if primary.mode() == WindowMode::Windowed {
+                primary.set_mode(WindowMode::Fullscreen);
+            } else {
+                primary.set_mode(WindowMode::Windowed);
+            }
+        }
+
     }
 
-    #[cfg(not(target_arch = "wasm32"))]
-    if key_input.just_pressed(KeyCode::F11) {
-        let primary = windows.get_primary_mut().unwrap();
-        if primary.mode() == WindowMode::Windowed {
-            primary.set_mode(WindowMode::Fullscreen);
-        } else {
-            primary.set_mode(WindowMode::Windowed);
-        }        
-    }
+
 }

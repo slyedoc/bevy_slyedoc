@@ -12,7 +12,7 @@ use engine::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
+        .add_plugin(EnginePlugin)
         .add_startup_system(setup.system())
         .run();
 }

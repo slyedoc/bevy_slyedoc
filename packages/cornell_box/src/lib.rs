@@ -17,7 +17,7 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn run() {
     App::new()
-        .add_plugin(StandardEnvironmentPlugin)
+        .add_plugin(EnginePlugin)
         .insert_resource(WindowDescriptor {
             title: "Cornell Box".to_string(),
             #[cfg(target_arch = "wasm32")]
@@ -25,6 +25,10 @@ pub fn run() {
             ..Default::default()
         })
         .insert_inspector_resource::<ClearColor>(ClearColor(Color::BLUE))
+        .insert_inspector_resource::<AmbientLight>(AmbientLight {
+            color: Color::WHITE,
+            brightness: 0.02,
+        })
         .add_startup_system(setup)
         .run();
 }
@@ -116,11 +120,7 @@ fn setup(
         ..Default::default()
     });
 
-    // ambient light
-    commands.insert_resource(AmbientLight {
-        color: Color::WHITE,
-        brightness: 0.02,
-    });
+
     // top light
     commands
         .spawn_bundle(PbrBundle {
