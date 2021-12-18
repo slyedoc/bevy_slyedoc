@@ -8,7 +8,7 @@ const { t } = useI18n()
   <div>
     <nav class="text-s" v-for="name in list">
 
-      <router-link class="mx-2" :to="`/wasm/${name}`" :title="name">
+      <router-link class="mx-2" :to="`/crates/${name}`" :title="name">
         {{ name }}
       </router-link>
     </nav>

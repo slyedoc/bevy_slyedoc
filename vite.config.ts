@@ -46,7 +46,6 @@ export default defineConfig(async ({ command, mode }) => {
             fs.mkdirSync(dir);
         }
         fs.writeFileSync(`${path.resolve(dir, 'index.vue')}`, [
-            
             `<script setup lang="ts">`,
             `    const wasm_name = "${name}"`,
             `</script>`,
@@ -66,9 +65,10 @@ export default defineConfig(async ({ command, mode }) => {
                 '~/': `${src_dir}/`,
             },
         },
-        // assetsInclude: [
-        //     `${packages_path}/**/assets/*.png`,
-        //     `${packages_path}/**/assets/*.jpg`],
+        assetsInclude: [
+             `${packages_path}/**/assets/*.png`,
+        //     `${packages_path}/**/assets/*.jpg`
+        ],
         plugins: [
 
             // https://github.com/lencx/vite-plugin-rsw#plugin-options
@@ -77,13 +77,9 @@ export default defineConfig(async ({ command, mode }) => {
                 cli: 'pnpm',// 'npm', 'pnpm'
                 profile: mode === 'development' ? 'dev' : 'release', // 'dev' | 'release' | 'profiling'
                 target: 'web', // 'bundler' | 'web' | 'nodejs' | 'no-modules'
-                unwatch: [`${src_dir}`],
-                crates: wasm_names.map((name) => {
-                    return {
-                        name: `crates/${name}`,
-                        //outDir: `${wasm_dir}/${name}`,
-                    }
-                }),
+                root: packages_path,
+                //unwatch: [`${src_dir}`],
+                crates: wasm_names,
             }),
 
             Vue({

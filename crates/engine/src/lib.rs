@@ -50,7 +50,7 @@ impl Plugin for EnginePlugin {
                 .insert_resource(DirectionalLightShadowMap { size: 2048 })
                 //Dont think this works
                 .insert_resource(AssetServerSettings {
-                    asset_folder: "test".to_string(),
+                    asset_folder: format!( "{}/assets",  self.title.to_lowercase()),
                 });
         }
         #[cfg(not(target_arch = "wasm32"))]

@@ -29,7 +29,7 @@ onMounted(async () => {
 
 async function load_wasm() {
   // using dynamic_imports
-  const { default: init } = await import(`./${props.name}/${props.name}.js`);
+  const { default: init } = await import(`./../../crates/${props.name}/pkg/${props.name}.js`);
   const wasm = await init();
   console.log('Init done');
   wasm.run();

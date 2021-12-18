@@ -7,12 +7,12 @@ import list from '~/wasm/list.json'
 <template>
 
   <div class="sidenav px-4 py-10 text-center text-gray-700 dark:text-gray-200">
-    <!-- <router-link class="icon-btn mx-2" :to="`/wasm/${name}`" :title="name"> -->
+    <!-- <router-link class="icon-btn mx-2" :to="`/crates/${name}`" :title="name"> -->
 
     <!-- </router-link> -->
       <nav class="text-xl mt-6" v-for="name in list">
 
-        <router-link class="icon-btn mx-2" :to="`/wasm/${name}`" :title="name">
+        <router-link class="icon-btn mx-2" :to="`/crates/${name}`" :title="name">
           {{ name }}
         </router-link>
       </nav>

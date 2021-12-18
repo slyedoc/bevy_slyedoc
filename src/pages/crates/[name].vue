@@ -1,9 +1,11 @@
 <script setup lang="ts">
-    const wasm_name = "cornell_box"
+  const props = defineProps<{ name: string }>()
 </script>
+
 <template>
-    <bevy-wasm :name="wasm_name" />
+  <bevy-wasm :name="props.name" />
 </template>
+
 <route lang="yaml">
 meta:
   layout: wasm
