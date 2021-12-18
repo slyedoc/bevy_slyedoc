@@ -1,26 +1,28 @@
 
 [package]
-name = "bevy_slyedoc_template"
+name = "bevy_slyedoc"
 version = "0.1.0"
 resolver = "2"
 
-[workspace]
-members = ["engine", "packages/*"]
+[profile.dev]
+opt-level = 1
 
+[workspace]
+members = ["crates/*"]
+
+# after bevy 0.6 I hope to not fork as much
 [patch.crates-io]
 #bevy = { path = "../bevy" }
-bevy = { git = "https://github.com/slyedoc/bevy", branch = "bevy-main" }
-#crevice = { path = "../bevy/crates/crevice" }
-crevice = { git = "https://github.com/slyedoc/bevy", branch = "bevy-main" }
+#bevy = { git = "https://github.com/slyedoc/bevy", branch = "bevy-main" }
+bevy = { git = "https://github.com/bevyengine/bevy", branch = "main" }
 #bevy_egui = { path = "../bevy_egui" }
-bevy_egui = { git = "https://github.com/slyedoc/bevy_egui", branch = "bevy-pipelined-optimized" }
+bevy_egui = { git = "https://github.com/slyedoc/bevy_egui", branch = "bevy-main" }
 #bevy-inspector-egui = { path = "../bevy-inspector-egui" }
-bevy-inspector-egui = { git = "https://github.com/slyedoc/bevy-inspector-egui", branch = "pipelined-editor" }
+bevy-inspector-egui = { git = "https://github.com/slyedoc/bevy-inspector-egui", branch = "bevy-main" }
 #bevy_mod_raycast = { path = "../bevy_mod_raycast" }
 bevy_mod_raycast = { git = "https://github.com/slyedoc/bevy_mod_raycast", branch = "master" }
 #bevy_mod_picking = { path = "../bevy_mod_picking" }
 bevy_mod_picking = { git = "https://github.com/slyedoc/bevy_mod_picking", branch = "master" }
-
 
 #bevy_asset_loader = { path = "../bevy_asset_loader/bevy_asset_loader" }
 

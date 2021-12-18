@@ -1,0 +1,23 @@
+[package]
+name = "engine" # TODO: Fine better name
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+bevy = { version = "0.5.0", default-features = false,    features = [
+     "render",
+     "bevy_winit",
+     "bevy_core_pipeline"
+]}
+bevy-inspector-egui = { version = "0.6.1" }
+bevy_egui = "0.8.0"
+wasm-bindgen = "0.2.78"
+ron = "0.7"
+hexasphere = "6.0.0"
+rand = "0.8"
+serde = { version = "1.0.130", features = ["serde_derive"] }
+anyhow = "1.0.50"
+
