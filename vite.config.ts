@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import path from 'path'
-import fs from 'fs'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
@@ -16,70 +15,33 @@ import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
 import LinkAttributes from 'markdown-it-link-attributes'
-import ViteRsw from 'vite-plugin-rsw'
+import { WasmPlugin } from './tools/vite-plugin-bevy';
+import { wasm_crates } from './frontend/src/wasm'; // genrated by "pack"
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig(async ({ command, mode }) => {
 
-    // Build the list of wasms for crates list and for json so we can use it client side
-    // TODO: Learn to create my own vite plugin, and put this there
-    const packages_path = `${path.resolve(__dirname, 'crates')}`
-    const wasm_names = fs.readdirSync(packages_path).filter((file) => {
-        if (!file.startsWith('.') && !file.startsWith('engine'))
-        // Ignore hidden folders and engine
-            return fs.statSync(`${packages_path}/${file}`).isDirectory()
-        return false
-    });
-    let src_dir = `${path.resolve(__dirname, 'src')}`
-    let wasm_dir = `${path.resolve(src_dir, 'wasm')}`
-    if (!fs.existsSync(wasm_dir)) {
-        fs.mkdirSync(wasm_dir);
-    }
-    fs.writeFileSync(`${path.resolve(wasm_dir, 'list.json')}`, JSON.stringify(wasm_names));
-    // TODO: find better way, was using a [name].vue file but since assetFolderSettings not working
-    // I need use folder stucture differently
-    // create index.vue files for each wasm,
-    wasm_names.map((name) => {
-        let dir = `${path.resolve(packages_path, name)}`
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-        fs.writeFileSync(`${path.resolve(dir, 'index.vue')}`, [
-            `<script setup lang="ts">`,
-            `    const wasm_name = "${name}"`,
-            `</script>`,
-            `<template>`,
-            `    <bevy-wasm :name="wasm_name" />`,
-            `</template>`,
-            `<route lang="yaml">`,
-            `meta:`,
-            `  layout: wasm`,
-            `</route>`,
-        ].join('\n'));
-   })
+    
+    let frontend = `${path.resolve(__dirname, 'frontend')}`;
+    let src_dir = `${path.resolve(frontend, 'src')}`;
 
     return {
+        root: frontend,
         resolve: {
             alias: {
                 '~/': `${src_dir}/`,
             },
         },
-        assetsInclude: [
-             `${packages_path}/**/assets/*.png`,
-        //     `${packages_path}/**/assets/*.jpg`
-        ],
+        // assetsInclude: [
+        //     `${packages_path}/**/assets/*.png`,
+        //     //     `${packages_path}/**/assets/*.jpg`
+        // ],
         plugins: [
-
-            // https://github.com/lencx/vite-plugin-rsw#plugin-options
-            // https://rustwasm.github.io/docs/wasm-pack/commands/build.html
-            ViteRsw({
-                cli: 'pnpm',// 'npm', 'pnpm'
-                profile: mode === 'development' ? 'dev' : 'release', // 'dev' | 'release' | 'profiling'
-                target: 'web', // 'bundler' | 'web' | 'nodejs' | 'no-modules'
-                root: packages_path,
-                //unwatch: [`${src_dir}`],
-                crates: wasm_names,
+            WasmPlugin({
+                crates: wasm_crates.map( n => {
+                    return { name: n, path: `./crates/${n}` };
+                })
             }),
 
             Vue({
@@ -103,7 +65,7 @@ export default defineConfig(async ({ command, mode }) => {
                     '@vueuse/head',
                     '@vueuse/core',
                 ],
-                dts: 'src/auto-imports.d.ts',
+                dts: `${src_dir}/auto-imports.d.ts`,
             }),
 
             // https://github.com/antfu/unplugin-vue-components
@@ -144,9 +106,7 @@ export default defineConfig(async ({ command, mode }) => {
                 headEnabled: true,
                 markdownItSetup(md) {
                     // https://prismjs.com/
-                    // @ts-expect-error types mismatch
                     md.use(Prism)
-                    // @ts-expect-error types mismatch
                     md.use(LinkAttributes, {
                         pattern: /^https?:\/\//,
                         attrs: {
@@ -190,7 +150,7 @@ export default defineConfig(async ({ command, mode }) => {
             VueI18n({
                 runtimeOnly: true,
                 compositionOnly: true,
-                include: [path.resolve(__dirname, 'locales/**')],
+                include: [ `${frontend}/locales/**`],
             }),
 
             // https://github.com/antfu/vite-plugin-inspect

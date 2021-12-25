@@ -1,0 +1,53 @@
+[package]
+name = "mold"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+# [profile.dev]
+# opt-level = 1
+
+# [features]
+# dev = ["bevy/dynamic"]
+
+[dependencies]
+bevy = { version = "0.5.0", default-features = false, features = [
+     "render",
+     "bevy_winit",
+     "bevy_core_pipeline"
+]}
+engine = { path = "../../engine" }
+wasm-bindgen = "0.2.78"
+wgpu-types = "0.12"
+wgpu = "0.12"
+rand = "0.8"
+bytemuck = { version = "1.4", features = [ "derive" ] }
+image = "0.23"
+
+[target.'cfg(target_os = "android")'.dependencies]
+ndk-glue = "0.5"
+
+[package.metadata.android]
+assets = "assets"
+res = "assets/android-res"
+icon = "@mipmap/ic_launcher"
+build_targets = ["aarch64-linux-android"]
+min_sdk_version = 16
+target_sdk_version = 29
+
+[package.metadata.android.application]
+label = "Bevy slimemold"
+
+[package.metadata.android.application.activity]
+orientation = "landscape"
+
+[[package.metadata.android.uses_feature]]
+name = "android.hardware.vulkan.level"
+required = true
+version = 1
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.INTERNET"

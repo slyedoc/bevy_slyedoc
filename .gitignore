@@ -1,5 +1,6 @@
 /target
 /target_web
+/alt-target
 /Cargo.lock
 node_modules
 
@@ -12,6 +13,4 @@ dist-ssr
 node_modules
 .idea/
 *.log
-.rsw
-.rsw.json
 pnpm-lock.yaml
