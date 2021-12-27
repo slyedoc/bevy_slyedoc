@@ -29,6 +29,7 @@ struct Settings {
     sensor_size: i32;
 };
 
+
 struct GlobalSettings {
     decay_rate: f32;
     diffuse_rate: f32;
@@ -43,7 +44,6 @@ struct AgentBuffer {
 struct AgentSettingsBuffer {
     settings: array<Settings>;
 };
-
 
 struct Time {
     total: f32;
@@ -263,12 +263,10 @@ fn combine(
             col = col + c_disp_settings.settings[completed + 0].color * vals.x;
             col = col + c_disp_settings.settings[completed + 1].color * vals.y;
             col = col + c_disp_settings.settings[completed + 2].color * vals.z;
-        }
-        else if (completed + 1 < species_count) {
+        } else if (completed + 1 < species_count) {
             col = col + c_disp_settings.settings[completed + 0].color * vals.x;
             col = col + c_disp_settings.settings[completed + 1].color * vals.y;
-        }
-        else if (completed < species_count) {
+        } else if (completed < species_count) {
             col = col + c_disp_settings.settings[completed + 0].color * vals.x;
         }
     }

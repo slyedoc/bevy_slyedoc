@@ -1,9 +1,11 @@
 [package]
 name = "boids"
+description = "ecs boid simulation"
 version = "0.1.0"
 edition = "2021"
 
-crate-type = ["cdylib"]
+[lib]
+crate-type = ["cdylib", "rlib"]
 # [features]
 # dev = ["bevy/dynamic"]
 
@@ -19,3 +21,4 @@ bevy-inspector-egui = { version = "0.6.1" }
 rand = "0.8"
 bytemuck = { version = "1.4", features = [ "derive" ] }
 image = "0.23"
+wasm-bindgen = "0.2.78"

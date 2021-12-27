@@ -34,8 +34,6 @@ use bevy::{
 use engine::prelude::*;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
-use wgpu::BufferBinding;
-use wgpu_types::BufferDescriptor;
 
 #[wasm_bindgen]
 pub fn run() {
@@ -49,7 +47,7 @@ pub fn run() {
         ..Default::default()
     });
 
-    let render_app = app.sub_app(RenderApp);
+    let render_app = app.sub_app_mut(RenderApp);
     render_app.add_system_to_stage(RenderStage::Extract, time_extract_system);
     render_app.init_resource::<MoldShaders>();
     let mut graph = render_app.world.get_resource_mut::<RenderGraph>().unwrap();

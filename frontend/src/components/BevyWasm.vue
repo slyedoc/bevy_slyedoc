@@ -1,13 +1,12 @@
-
 <script setup lang="ts">
-import { wasm_crates } from '~/wasm';
+import { wasm_crates } from 'virtual:generated-wasms';
 const props = defineProps<{ name: string }>()
 
-const valid = wasm_crates.filter(item => item === props.name)
+const valid = wasm_crates.filter(item => item.name === props.name)
 const router = useRouter()
 const gpu = (navigator as any).gpu;
 
-watch( () => props.name, async (selection, prevSelection) => { 
+watch( () => props.name, async (selection, prevSelection) => {
     console.log(
         "Watch props.name function called with args:",
         selection,
@@ -23,8 +22,6 @@ onMounted(async () => {
   if (gpu && valid) {
     await load_wasm()
   }
-
-
 });
 
 async function load_wasm() {
@@ -83,10 +80,10 @@ const { t } = useI18n()
   */
   margin-left: auto;
   margin-right: auto;
-  display: block; 
+  /* display: block; 
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  pointer-events: none; */
 }
 </style>
 

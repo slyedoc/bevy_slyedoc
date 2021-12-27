@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { wasm_crates } from '~/wasm';
+import { wasm_crates } from 'virtual:generated-wasms';
 
 const { t } = useI18n()
 </script>

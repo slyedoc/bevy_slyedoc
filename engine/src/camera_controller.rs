@@ -133,10 +133,12 @@ fn update_camera_controller(
         // Handle mouse look on mouse button
         let mut mouse_delta = Vec2::ZERO;
         if mouse_input.pressed(options.mouse_look) {
+            #[cfg(not(target="wasm32"))]
             window.set_cursor_lock_mode(true);
             window.set_cursor_visibility(false);
         }
         if mouse_input.just_released(options.mouse_look) {
+            #[cfg(not(target="wasm32"))]
             window.set_cursor_lock_mode(false);
             window.set_cursor_visibility(true);
         }

@@ -1,4 +1,24 @@
-# Frontend_wasm
+# Bevy Slyedoc
+
+Personal Playground using bevy main branch, vite, and vue.
+
+Been getting several community examples working on main, will try to link to their sources.
+
+## Project
+
+- Crates - Serveral Bevy Example Crates that can be run local or compiled to wasm32
+- Engine -
+- Tools
+  - vite-plugin-rust-wasm: My first vite plugin, after having problmes with 2 community plugins, I wanted to understand vite better, so started my own by writting my own.
+
+## Todo
+
+- [ ] Kill wasm on page change
+- [ ] Fine better solution to window resize, really should be provided to bevy on element resize then use limit to prevent texuture size limit
+  - Will likely use [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+  - Surprised I haven't found any decent examples
+- [ ] Remove 'Pack' tool, and figure out how to use watch correctly in vite
+- [ ] Figure out way to bundle assets into a bundle, sponza
 
 ## Browsers
 
@@ -10,24 +30,14 @@ You will need canary or dev build of Chrome currently
 
 ## Setup
 
-- ```cd fronend```
-- ```pnpm install```
+Requires [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
 
-<p align='center'>
-  <img src='https://user-images.githubusercontent.com/11247099/111864893-a457fd00-899e-11eb-9f05-f4b88987541d.png' alt='Vitesse - Opinionated Vite Starter Template' width='600'/>
-</p>
+```
+pnpm install
+cargo run -p pack // TODO: remove this once watch is working
+vite
+```
 
-<p align='center'>
-Mocking up web app with <b>Vitesse</b><sup><em>(speed)</em></sup><br>
-</p>
-
-<br>
-
-<p align='center'>
-<a href="https://vitesse.netlify.app/">Live Demo</a>
-</p>
-
-<br>
 
 ## Features
 
@@ -158,27 +168,6 @@ When you use this template, try follow the checklist to update your info properl
 - [ ] Clean up the READMEs and remove routes
 
 And, enjoy :)
-
-## Usage
-
-### Development
-
-Just run and visit http://localhost:3333
-
-```bash
-pnpm dev
-```
-
-### Build
-
-To build the App, run
-
-```bash
-pnpm build
-```
-
-And you will see the generated file in `dist` that ready to be served.
-
 ### Deploy on Netlify
 
 Go to [Netlify](https://app.netlify.com/start) and select your clone, `OK` along the way, and your App will be live in a minute.

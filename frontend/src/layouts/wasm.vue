@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { wasm_crates } from '~/wasm';
+import { wasm_crates } from 'virtual:generated-wasms';
 
 </script>
 
@@ -10,10 +10,14 @@ import { wasm_crates } from '~/wasm';
     <!-- <router-link class="icon-btn mx-2" :to="`/crates/${name}`" :title="name"> -->
 
     <!-- </router-link> -->
-      <nav class="text-xl mt-6" v-for="name in wasm_crates">
+      <nav class="text-xl mt-6" v-for="crate in wasm_crates">
 
-        <router-link class="icon-btn mx-2" :to="`/crates/${name}`" :title="name">
-          {{ name }}
+        <router-link class="icon-btn mx-2" :to="`/crates/${crate.name}`" :title="crate.name">
+          {{ crate.name }}
+          <div class="text-sm">
+            {{ crate.description }}
+          </div>
+          
         </router-link>
       </nav>
   </div>

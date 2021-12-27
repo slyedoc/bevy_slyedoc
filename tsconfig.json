@@ -17,10 +17,11 @@
       "cypress",
       "vite/client",
       "vite-plugin-pages/client",
-      "vite-plugin-vue-layouts/client"
+      "vite-plugin-vue-layouts/client",
+      "./tools/vite-plugin-rust-wasm/client",
     ],
     "paths": {
-      "~/*": ["frontend/src/*"]
+      "~/*": ["frontend/src/*", "tools/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

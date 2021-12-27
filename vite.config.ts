@@ -15,14 +15,13 @@ import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
 import LinkAttributes from 'markdown-it-link-attributes'
-import { WasmPlugin } from './tools/vite-plugin-bevy';
-import { wasm_crates } from './frontend/src/wasm'; // genrated by "pack"
+import { WasmPlugin } from './tools/vite-plugin-rust-wasm';
+import fg from 'fast-glob';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig(async ({ command, mode }) => {
 
-    
     let frontend = `${path.resolve(__dirname, 'frontend')}`;
     let src_dir = `${path.resolve(frontend, 'src')}`;
 
@@ -34,16 +33,17 @@ export default defineConfig(async ({ command, mode }) => {
             },
         },
         // assetsInclude: [
-        //     `${packages_path}/**/assets/*.png`,
-        //     //     `${packages_path}/**/assets/*.jpg`
-        // ],
+        //      `${packages_path}/**/assets/*.png`,
+        //      //     `${packages_path}/**/assets/*.jpg`
+        //  ],
         plugins: [
-            WasmPlugin({
-                crates: wasm_crates.map( n => {
-                    return { name: n, path: `./crates/${n}` };
-                })
-            }),
 
+            // our plugin
+            WasmPlugin({
+                url_folder: '/wasm',
+                crates: ["../crates/*"], // path is relative to the root above
+                out_dir: "pkg",
+            }),
             Vue({
                 include: [/\.vue$/, /\.md$/],
             }),
