@@ -15,35 +15,40 @@ import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
 import LinkAttributes from 'markdown-it-link-attributes'
-import { WasmPlugin } from './tools/vite-plugin-rust-wasm';
-import fg from 'fast-glob';
+import { BevyWasm } from './tools/vite-plugin-vue-bevy';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig(async ({ command, mode }) => {
 
-    let frontend = `${path.resolve(__dirname, 'frontend')}`;
-    let src_dir = `${path.resolve(frontend, 'src')}`;
+    let src_dir = `${path.resolve(__dirname, 'src')}`;
 
     return {
-        root: frontend,
+        //root: frontend,
+        // build: {
+        //     //outDir: '../dist',
+        //     emptyOutDir: true,
+        // },
         resolve: {
             alias: {
                 '~/': `${src_dir}/`,
             },
         },
         // assetsInclude: [
-        //      `${packages_path}/**/assets/*.png`,
-        //      //     `${packages_path}/**/assets/*.jpg`
+        //      `../examples/**/assets/*.png`,
+        //      `../examples/**/assets/*.jpg`
         //  ],
         plugins: [
 
             // our plugin
-            WasmPlugin({
-                url_folder: '/wasm',
-                crates: ["../crates/*"], // path is relative to the root above
-                out_dir: "pkg",
+            BevyWasm({
+                crates: ["./crates/**/Cargo.toml"],
+                // out_dir is relative to each crate, wasm-pack issue
+                out_dir: `${src_dir}/wasm`,
+                out_dir_dist: `${src_dir}/wasm`,
+                watch_debounce: 5000,
             }),
+
             Vue({
                 include: [/\.vue$/, /\.md$/],
             }),
@@ -86,7 +91,7 @@ export default defineConfig(async ({ command, mode }) => {
                     }),
                 ],
 
-                dts: 'src/components.d.ts',
+                dts: `${src_dir}/components.d.ts`,
             }),
 
             // https://github.com/antfu/unplugin-icons
@@ -150,7 +155,7 @@ export default defineConfig(async ({ command, mode }) => {
             VueI18n({
                 runtimeOnly: true,
                 compositionOnly: true,
-                include: [ `${frontend}/locales/**`],
+                include: [`locales/**`],
             }),
 
             // https://github.com/antfu/vite-plugin-inspect
@@ -187,3 +192,5 @@ export default defineConfig(async ({ command, mode }) => {
         },
     }
 })
+
+

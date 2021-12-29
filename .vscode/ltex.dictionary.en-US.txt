@@ -3,3 +3,11 @@ npm
 wasm
 vite
 Vite
+sponza
+wasmbinding
+web-sys
+vite-plugin-rust-wasm
+EGUI
+WorldInspector
+fullscreen
+Vueify

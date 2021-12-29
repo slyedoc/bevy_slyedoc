@@ -1,0 +1,3 @@
+fn main() {
+    mold::run();
+}

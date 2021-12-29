@@ -13,4 +13,3 @@ dist-ssr
 node_modules
 .idea/
 *.log
-pnpm-lock.yaml

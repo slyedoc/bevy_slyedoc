@@ -18,10 +18,10 @@
       "vite/client",
       "vite-plugin-pages/client",
       "vite-plugin-vue-layouts/client",
-      "./tools/vite-plugin-rust-wasm/client",
+      "./tools/vite-plugin-vue-bevy/client",
     ],
     "paths": {
-      "~/*": ["frontend/src/*", "tools/*"]
+      "~/*": ["src/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

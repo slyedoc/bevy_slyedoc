@@ -1,0 +1,4 @@
+{"rule":"TO_DO_HYPHEN","sentence":"^\\QTodo\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Qrollup-plugin-rust This one is pretty nice\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Qvite-plugin-wasm-pack The better of the 2\nvite-plugin-rsw Supports multiple crates (but you have to run the cargo build yourself or use \"rsw-node\" tool which just does the cargo build) Has a custom cargo dependency watcher, that tries to detect cargo dependency changes as well setup though.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qvite-plugin-wasm-pack The better of the 2\nvite-plugin-rsw Supports multiple crates (but you have to run the cargo build yourself or use \"rsw-node\" tool which just does the cargo build) Has a custom cargo dependency watcher, that tries to detect cargo dependency changes as well setup though.\\E$"}

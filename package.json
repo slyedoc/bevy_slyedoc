@@ -2,8 +2,7 @@
     "name": "frontend",
     "private": true,
     "scripts": {
-        "wasm": "wasm-pack build ./crates/disco --target web",
-        "build": "cross-env NODE_ENV=production vite-ssg build",
+        "build": "",
         "dev": "vite",
         "lint": "eslint \"**/*.{vue,ts,js}\"",
         "preview": "vite preview",
@@ -20,6 +19,7 @@
         "vue-demi": "^0.12.1",
         "vue-i18n": "^9.1.9",
         "vue-router": "^4.0.12",
+        "vuepress-vite": "^2.0.0-beta.6",
         "wasm-opt": "^1.2.1"
     },
     "devDependencies": {

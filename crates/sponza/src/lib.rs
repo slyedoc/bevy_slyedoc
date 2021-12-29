@@ -20,7 +20,7 @@ pub fn run() {
         .add_state(AppState::Loading)
         .add_startup_system(setup)
         .add_startup_system(setup_camera)
-        .add_system(scene_update)
+        //.add_system(scene_update)
         .run();
 }
 
@@ -71,22 +71,22 @@ fn setup_camera(mut commands: Commands) {
 #[derive(Default)]
 struct SceneInstance(Option<bevy::scene::InstanceId>);
 
-fn scene_update(
-    mut commands: Commands,
-    scene_spawner: Res<SceneSpawner>,
-    scene_instance: Res<SceneInstance>,
-    mut done: Local<bool>,
-) {
-    if !*done {
-        if let Some(instance_id) = scene_instance.0 {
-            if let Some(entity_iter) = scene_spawner.iter_instance_entities(instance_id) {
-                entity_iter.for_each(|entity| {
-                    // commands
-                    //     .entity(entity)
-                        //.insert_bundle(PickableBundle::default());
-                });
-                *done = true;
-            }
-        }
-    }
-}
+// fn scene_update(
+//     mut _commands: Commands,
+//     scene_spawner: Res<SceneSpawner>,
+//     scene_instance: Res<SceneInstance>,
+//     mut done: Local<bool>,
+// ) {
+//     if !*done {
+//         if let Some(instance_id) = scene_instance.0 {
+//             if let Some(entity_iter) = scene_spawner.iter_instance_entities(instance_id) {
+//                 entity_iter.for_each(|entity| {
+//                     // commands
+//                     //     .entity(entity)
+//                         //.insert_bundle(PickableBundle::default());
+//                 });
+//                 *done = true;
+//             }
+//         }
+//     }
+// }
