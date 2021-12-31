@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import chalk from 'chalk';
+import fs from 'fs-extra';
 import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -34,10 +36,6 @@ export default defineConfig(async ({ command, mode }) => {
                 '~/': `${src_dir}/`,
             },
         },
-        // assetsInclude: [
-        //      `../examples/**/assets/*.png`,
-        //      `../examples/**/assets/*.jpg`
-        //  ],
         plugins: [
 
             // our plugin
@@ -163,8 +161,6 @@ export default defineConfig(async ({ command, mode }) => {
                 // change this to enable inspect for debugging
                 enabled: false,
             }),
-
-
         ],
 
         server: {
@@ -192,5 +188,3 @@ export default defineConfig(async ({ command, mode }) => {
         },
     }
 })
-
-

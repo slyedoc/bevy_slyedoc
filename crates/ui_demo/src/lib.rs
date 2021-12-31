@@ -1,6 +1,8 @@
 
   
 use bevy::prelude::*;
+use engine::EnginePlugin;
+use wasm_bindgen::prelude::*;
 
 // This example will display a simple menu using Bevy UI where you can start a new game,
 // change some settings or quit. There is no actual game, it will just display the current
@@ -28,10 +30,12 @@ enum DisplayQuality {
 #[derive(Debug, Component, PartialEq, Eq, Clone, Copy)]
 struct Volume(u32);
 
-
+#[wasm_bindgen(start)]
 pub fn run() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugin(EnginePlugin { 
+            title: "ui_demo".to_string() 
+        })
         // Insert as resource the initial value for the settings resources
         .insert_resource(DisplayQuality::Medium)
         .insert_resource(Volume(7))

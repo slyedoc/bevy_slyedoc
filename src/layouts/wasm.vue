@@ -10,6 +10,9 @@ import { wasm_crates } from 'virtual:@vue-bevy/generated-wasms';
     <!-- <router-link class="icon-btn mx-2" :to="`/crates/${name}`" :title="name"> -->
 
     <!-- </router-link> -->
+      <router-link class="icon-btn mx-2" :to="`/`" title="Home">
+          Home
+       </router-link>
       <nav class="text-xl mt-6" v-for="crate in wasm_crates">
 
         <router-link class="icon-btn mx-2" :to="`/${crate.name}`" :title="crate.name">
@@ -25,8 +28,8 @@ import { wasm_crates } from 'virtual:@vue-bevy/generated-wasms';
   <main class="main px-4 py-10 text-center text-gray-700 dark:text-gray-200">
     <router-view />
     <Footer />
-    <div class="mt-5 mx-auto text-center opacity-25 text-sm">
+    <!-- <div class="mt-5 mx-auto text-center opacity-25 text-sm">
       [Wasm Layout]
-    </div>
+    </div> -->
   </main>
 </template>

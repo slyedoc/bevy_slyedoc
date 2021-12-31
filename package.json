@@ -2,7 +2,7 @@
     "name": "frontend",
     "private": true,
     "scripts": {
-        "build": "",
+        "build": "vite build",
         "dev": "vite",
         "lint": "eslint \"**/*.{vue,ts,js}\"",
         "preview": "vite preview",

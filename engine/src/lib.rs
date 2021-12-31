@@ -34,10 +34,13 @@ pub struct EnginePlugin {
 impl Plugin for EnginePlugin {
     fn build(&self, app: &mut App) {
 
+        // I kind hate calling default plugins for all other crates,
+        // but I have been burn so many times from ordering issues
+
         #[cfg(target_arch = "wasm32")]
-        // Set asset path
+        // Set asset path, vite needs to handle this for us
         app.insert_resource(AssetServerSettings {
-            asset_folder: format!( "/wasm/{}/assets",
+            asset_folder: format!( "/assets/{}",
             self.title.to_lowercase())
         });
 
