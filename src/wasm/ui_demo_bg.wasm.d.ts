@@ -44,5 +44,5 @@ export function wgpu_render_bundle_draw_indexed_indirect(a: number, b: number, c
 export function wgpu_render_bundle_set_push_constants(a: number, b: number, c: number, d: number, e: number): void;
 export function wgpu_render_bundle_pop_debug_group(a: number): void;
 export function wgpu_render_bundle_insert_debug_marker(a: number, b: number): void;
-export function wgpu_render_pass_execute_bundles(a: number, b: number, c: number): void;
 export function wgpu_render_bundle_push_debug_group(a: number, b: number): void;
+export function wgpu_render_pass_execute_bundles(a: number, b: number, c: number): void;

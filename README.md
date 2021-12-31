@@ -3,7 +3,6 @@
 Personal Playground using bevy main branch, vite, and vue.
 
 Been getting several community examples working, will try to link to their sources.
-
 ## Project
 
 - Crates - Several Bevy example crates that can be run local or served

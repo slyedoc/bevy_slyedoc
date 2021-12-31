@@ -48,8 +48,8 @@ export interface InitOutput {
   readonly wgpu_render_bundle_set_push_constants: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly wgpu_render_bundle_pop_debug_group: (a: number) => void;
   readonly wgpu_render_bundle_insert_debug_marker: (a: number, b: number) => void;
-  readonly wgpu_render_pass_execute_bundles: (a: number, b: number, c: number) => void;
   readonly wgpu_render_bundle_push_debug_group: (a: number, b: number) => void;
+  readonly wgpu_render_pass_execute_bundles: (a: number, b: number, c: number) => void;
 }
 
 /**
