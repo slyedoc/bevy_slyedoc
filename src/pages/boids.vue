@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Generated File
 import boidsReadme from '../../crates/boids/readme.md'
-import init  from '~/wasm/boids'
+import init from 'virtual:@vue-bevy/boids';
 const gpu = (navigator as any).gpu;
 
 tryOnMounted(async () => {
