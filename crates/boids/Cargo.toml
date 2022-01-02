@@ -4,10 +4,12 @@ description = "2d ecs boid simulation"
 version = "0.1.1"
 edition = "2021"
 
+
 [lib]
 crate-type = ["cdylib", "rlib"]
 # [features]
 # dev = ["bevy/dynamic"]
+
 
 [dependencies]
 engine = { path = "../../engine" }

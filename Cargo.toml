@@ -7,11 +7,15 @@ resolver = "2"
 [profile.dev]
 opt-level = 1
 
+[profile.release]
+lto = true # 's', 'z', 
+
 [workspace]
 members = [
     "crates/*",
     "engine"
 ]
+
 
 [build-dependencies]
 serde_json = "1.0"

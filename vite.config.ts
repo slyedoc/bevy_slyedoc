@@ -1,6 +1,4 @@
 /* eslint-disable no-console */
-import chalk from 'chalk';
-import fs from 'fs-extra';
 import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -38,13 +36,14 @@ export default defineConfig(async ({ command, mode }) => {
         },
         plugins: [
 
-            // our plugin
+            // our plugin - idea is to make this reusable for other
+            // people, its not there yet
             BevyWasm({
                 crates: ["./crates/**/Cargo.toml"],
-                // out_dir is relative to each crate, wasm-pack issue
                 out_dir: `${src_dir}/wasm`,
-                out_dir_dist: `${src_dir}/wasm`,
-                watch_debounce: 5000,
+                out_dir_dist: `${src_dir}/wasm_dist`,
+                dts: "",
+                wasm_opt: false,
             }),
 
             Vue({

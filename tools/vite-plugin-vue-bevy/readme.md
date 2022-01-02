@@ -10,6 +10,8 @@ My first vite plugin, so take that into account before using.
 
 ## Notes
 
+[Wasm Size](https://rustwasm.github.io/docs/book/reference/code-size.html)
+
 There are 2 vite plugins I tried before starting my own.
 
 - [vite-plugin-wasm-pack](https://github.com/nshen/vite-plugin-wasm-pack)

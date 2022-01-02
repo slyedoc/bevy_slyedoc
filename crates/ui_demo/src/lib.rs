@@ -1,5 +1,3 @@
-
-  
 use bevy::prelude::*;
 use engine::EnginePlugin;
 use wasm_bindgen::prelude::*;
@@ -33,8 +31,8 @@ struct Volume(u32);
 #[wasm_bindgen(start)]
 pub fn run() {
     App::new()
-        .add_plugin(EnginePlugin { 
-            title: "ui_demo".to_string() 
+        .add_plugin(EnginePlugin {
+            title: "ui_demo".to_string()
         })
         // Insert as resource the initial value for the settings resources
         .insert_resource(DisplayQuality::Medium)

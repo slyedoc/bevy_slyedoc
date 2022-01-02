@@ -5,7 +5,6 @@ import init  from '~/wasm/snake'
 const gpu = (navigator as any).gpu;
 
 tryOnMounted(async () => {
-    //const { default: init } = await import('~/wasm/disco')
     if (gpu) {
         const wasm =  await init();
         wasm.run();
@@ -17,7 +16,6 @@ const { t } = useI18n()
 </script>
 
 <template>
-    
     <snakeReadme />
     <template v-if="!gpu">
         <p class="text-sm mt-4">
@@ -27,6 +25,8 @@ const { t } = useI18n()
         </p>
     </template>
     <template v-if="gpu">
+        Make sure canvas has focus <br />
+        Hit F12 for editor<br />
         <canvas class="wasm" />
     </template>
 

@@ -1,22 +1,24 @@
 <script setup lang="ts">
-// Generated File
-import ui_demoReadme from '../../crates/ui_demo/readme.md'
-import init  from '~/wasm/ui_demo'
-const gpu = (navigator as any).gpu;
+// import boidsReadme from 'virtual:@vue-bevy/boids/readme.md'
 
-tryOnMounted(async () => {
-    if (gpu) {
-        const wasm =  await init();
-        wasm.run();
-    }
-});
+/// ts-ignore
+// import init  from 'virtual:@vue-bevy/boids'
+ const gpu = (navigator as any).gpu;
+
+//  tryOnMounted(async () => {
+//      if (gpu) {
+//          const wasm =  await init();
+//          wasm.run();
+//      }
+//  });
 
 const router = useRouter()
 const { t } = useI18n()
 </script>
 
 <template>
-    <ui_demoReadme />
+    
+    <!-- <boidsReadme /> -->
     <template v-if="!gpu">
         <p class="text-sm mt-4">
         WebGPU not supported! Please visit
@@ -25,8 +27,6 @@ const { t } = useI18n()
         </p>
     </template>
     <template v-if="gpu">
-        Make sure canvas has focus <br />
-        Hit F12 for editor<br />
         <canvas class="wasm" />
     </template>
 

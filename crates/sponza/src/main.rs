@@ -1,3 +1,4 @@
+mod lib;
 fn main() {
-    sponza::run();
+    lib::run();
 }
