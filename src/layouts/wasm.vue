@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { wasm_crates } from 'virtual:@vue-bevy/generated-wasms';
+import { wasm_crates } from 'virtual:vue-bevy/generated-wasms';
 
 </script>
 

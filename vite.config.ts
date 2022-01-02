@@ -40,10 +40,13 @@ export default defineConfig(async ({ command, mode }) => {
             // people, its not there yet
             BevyWasm({
                 crates: ["./crates/**/Cargo.toml"],
-                out_dir: `${src_dir}/wasm`,
-                out_dir_dist: `${src_dir}/wasm_dist`,
-                dts: "",
-                wasm_opt: false,
+                // I want to seperate the out-dir so that we dont have to rebuild everything unless its changes
+                // dont currently do that check though, will add back once I get everything working
+                // Will also be easy compare sizes
+                out_dir: `./target/wasm`, // serve
+                out_dir_dist: `./target/wasm_dist`, // build
+                dts: `${src_dir}/wasm/*.d.ts`, // star will be replaced with crate name
+                wasm_opt: false, // has only been reducing file size by 2-3mb, nice but not worth the build time at the moment right now
             }),
 
             Vue({

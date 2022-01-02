@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WebgpuNotes from '~/components/webgpu-notes.vue';
 // import boidsReadme from 'virtual:@vue-bevy/boids/readme.md'
 
 /// ts-ignore
@@ -26,6 +27,7 @@ const { t } = useI18n()
         status.
         </p>
     </template>
+    <WebgpuNotes />
     <template v-if="gpu">
         <canvas class="wasm" />
     </template>
