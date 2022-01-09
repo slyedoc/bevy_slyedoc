@@ -1,51 +1,19 @@
 <script setup lang="ts">
-import WebgpuNotes from '~/components/webgpu-notes.vue';
-// import boidsReadme from 'virtual:@vue-bevy/boids/readme.md'
-
-/// ts-ignore
-// import init  from 'virtual:@vue-bevy/boids'
- const gpu = (navigator as any).gpu;
-
-//  tryOnMounted(async () => {
-//      if (gpu) {
-//          const wasm =  await init();
-//          wasm.run();
-//      }
-//  });
-
-const router = useRouter()
-const { t } = useI18n()
 </script>
 
 <template>
-    
-    <!-- <boidsReadme /> -->
-    <template v-if="!gpu">
-        <p class="text-sm mt-4">
-        WebGPU not supported! Please visit
-        <a href="//webgpu.io">webgpu.io</a> to see the current implementation
-        status.
-        </p>
-    </template>
-    <WebgpuNotes />
-    <template v-if="gpu">
-        <canvas class="wasm" />
-    </template>
+    <v-app style="z-index: 0">
+    <v-app-bar color="grey-lighten-2" absolute></v-app-bar>
+    <v-navigation-drawer color="grey-darken-2" absolute permanent></v-navigation-drawer>
+    <v-navigation-drawer color="grey-darken-2" absolute permanent position="right"></v-navigation-drawer>
+    <v-main>
+      <v-card height="200px">
+Something in here
 
-    <button class="btn m-3 text-sm mt-6" @click="router.back()">
-    {{ t("button.back") }}
-    </button>
-
+      </v-card>
+    </v-main>
+  </v-app>
 </template>
 
 <style scoped>
-.wasm {
-    margin-left: auto;
-    margin-right: auto;
-}
 </style>
-
-<route lang="yaml">
-meta:
-    layout: wasm
-</route>

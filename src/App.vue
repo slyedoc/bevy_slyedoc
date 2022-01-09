@@ -1,3 +1,7 @@
+<template>
+  <router-view />
+</template>
+
 <script setup lang="ts">
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -10,6 +14,3 @@ useHead({
 })
 </script>
 
-<template>
-  <router-view />
-</template>

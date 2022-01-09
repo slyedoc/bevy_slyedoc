@@ -11,3 +11,5 @@ EGUI
 WorldInspector
 fullscreen
 Vueify
+SFCs
+Bitshifter

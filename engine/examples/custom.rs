@@ -1,8 +1,4 @@
-use bevy::{
-    core::Name,
-    math::Vec3,
-    prelude::*,
-};
+use bevy::prelude::*;
 use engine::prelude::*;
 
 fn main() {

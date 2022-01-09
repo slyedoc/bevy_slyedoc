@@ -5,6 +5,7 @@ const { t } = useI18n()
 </script>
 
 <template>
+<v-card>
   <Readme />
   <p class="text-4xl">
     <carbon-campsite class="inline-block" />
@@ -15,9 +16,10 @@ const { t } = useI18n()
   <p>
     <em class="text-sm opacity-75">{{ t('intro.desc') }}</em>
   </p>
+  </v-card>
 </template>
 
 <route lang="yaml">
 meta:
-  layout: wasm
+  layout: default
 </route>
